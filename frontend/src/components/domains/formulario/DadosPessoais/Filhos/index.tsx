@@ -10,7 +10,7 @@ import { InternosInsaltSchema } from "../../schema";
 export function FilhosInsalt() {
     const fakeId = useMemo(() => createFakeTempGUID(), []);
 
-    const context = useAppFormContext();
+    const context = useAppFormContext<InternosInsaltSchema>();
     const { control } = context;
 
     const { fields, append, remove } = useAppFieldArray<InternosInsaltSchema>({

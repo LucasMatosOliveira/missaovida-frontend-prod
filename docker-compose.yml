@@ -1,0 +1,20 @@
+services:
+  missaovida_frontend:
+    build: .
+    container_name: missaovida_frontend
+    ports:
+      - "8002:8002"
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:8002/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 1
+      start_period: 15s
+    environment:
+      - NODE_ENV=production
+     deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 125M

@@ -2,7 +2,7 @@
 FROM node:current-bookworm-slim
 
 # Instala o curl para o healthcheck, se necessário
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Define o diretório de trabalho
 WORKDIR /app

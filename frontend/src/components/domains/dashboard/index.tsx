@@ -12,14 +12,18 @@ import { toast } from "react-toastify";
 
 export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardProps) {
   const [userData, setUserData] = useState<Interno[]>([]);
-  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [hasRedirected, setHasRedirected] = useState(false);
   const [isLogoutToastShown, setIsLogoutToastShown] = useState(false);
   const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
 
-  const getToken = () => localStorage.getItem("token");
-
+  useEffect(() => {
+      // Só executa no cliente
+      if (typeof window !== 'undefined') {
+        setToken(localStorage.getItem('token')!);
+      }
+    }, []);
   const checkTokenValidity = (currentToken: string | null) => {
     if (!currentToken) {
       setIsTokenValid(false);
@@ -53,7 +57,7 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
 
   const setLogoutTimeout = (timeout: number) => {
     setTimeout(() => {
-      const currentToken = getToken();
+      const currentToken = token;
       checkTokenValidity(currentToken);
     }, timeout);
   };
@@ -81,7 +85,7 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   };
 
   useEffect(() => {
-    const currentToken = getToken();
+    const currentToken = token;
     checkTokenValidity(currentToken);
   }, []);
 
@@ -104,7 +108,6 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   };
 
   const atualizarDados = async () => {
-    const token = localStorage.getItem('token')
     if (token) {
         const fetchData = async () => {
           const api = new InternosApi();

@@ -1,8 +1,10 @@
+
+"use client"
 import { EstadoUF } from '@/components/domains/formulario/entidades';
 import { useForm } from "react-hook-form";
 import { internosInsaltSchema, InternosInsaltSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { InternosApi } from "./internos.api";
 import { useSpinner } from "@/contexts/SpinnerContext";
 import { useSnapshot } from "valtio";
@@ -17,8 +19,15 @@ export function useInternosInsalt({ idInterno, onDadosSalvos }: InternosInsaltAr
         resolver: zodResolver(internosInsaltSchema),
     });
 
+    const [token, setToken] = useState<string | null>(null);
+
     const { showSpinner, hideSpinner } = useSpinner();
-    const token = localStorage.getItem('token');
+    useEffect(() => {
+        // Só executa no cliente
+        if (typeof window !== 'undefined') {
+          setToken(localStorage.getItem('token')!);
+        }
+      }, []);
 
     const { reset } = formMethods;
 

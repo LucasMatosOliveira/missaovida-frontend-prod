@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Icon from 'react-icons-kit';
 import { signOut as signOutIcon } from 'react-icons-kit/fa/signOut';
@@ -7,8 +8,14 @@ import { cloneAndAddClass } from '@/components/form';
 import { ButtonHTMLAttributes } from 'react';
 
 export function SignOutButton({className, ...props}: SignOutButtonProps) {
+    useEffect(() => {
+        // Esse código será executado apenas no cliente
+        if (typeof window !== 'undefined') {
+            localStorage.clear();
+        }
+    }, []);
+
     const handleSignOut = async () => {
-        localStorage.clear();
         await signOut({ callbackUrl: AppRoutes.Login() });
     };
 

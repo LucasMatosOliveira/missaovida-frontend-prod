@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 # Copia apenas os arquivos de dependências para instalar pacotes primeiro
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 # Instala as dependências de produção
 RUN npm ci --only=production

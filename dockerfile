@@ -13,10 +13,6 @@ COPY package.json package-lock.json ./
 # Instala as dependências de produção
 RUN npm ci --only=production
 
-# Copia o diretório Prisma e gera o cliente Prisma
-COPY ./prisma ./prisma
-RUN npx prisma generate
-
 # Copia o restante do código do projeto
 COPY . .
 

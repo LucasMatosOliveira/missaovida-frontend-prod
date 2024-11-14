@@ -19,16 +19,15 @@ export function useInternosInsalt({ idInterno, onDadosSalvos }: InternosInsaltAr
         resolver: zodResolver(internosInsaltSchema),
     });
 
-    const [token, setToken] = useState<string | null>(null);
-
     const { showSpinner, hideSpinner } = useSpinner();
-    useEffect(() => {
-        // Só executa no cliente
-        if (typeof window !== 'undefined') {
-          setToken(localStorage.getItem('token')!);
+    const getToken = () => {
+        if (typeof window !== "undefined") {
+          return localStorage.getItem("token");
         }
-      }, []);
+        else return ''
+      };
 
+    const token = getToken();
     const { reset } = formMethods;
 
     useEffect(() => {

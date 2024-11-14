@@ -34,9 +34,10 @@ export function UseLoginPage() {
 
         const token = response?.ok ? (await getToken()) : null;
         if (typeof window !== "undefined") {
-            const token = localStorage.getItem('token');
-            console.log({token, teste:  typeof window})
             if (token) {
+                localStorage.setItem('token', token!);
+                //console.log(localStorage.getItem('token'))
+                //console.log({token, teste:  typeof window})
                 setToken2(token);
             }
         }

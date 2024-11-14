@@ -7,15 +7,12 @@ import { AppRoutes } from '@/commom/http/app-routes';
 import { cloneAndAddClass } from '@/components/form';
 import { ButtonHTMLAttributes } from 'react';
 
-export function SignOutButton({className, ...props}: SignOutButtonProps) {
-    useEffect(() => {
-        // Esse código será executado apenas no cliente
+export function SignOutButton({ className, ...props }: SignOutButtonProps) {
+    const handleSignOut = async () => {
+
         if (typeof window !== 'undefined') {
             localStorage.clear();
         }
-    }, []);
-
-    const handleSignOut = async () => {
         await signOut({ callbackUrl: AppRoutes.Login() });
     };
 

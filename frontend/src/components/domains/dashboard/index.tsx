@@ -16,14 +16,17 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   const [hasRedirected, setHasRedirected] = useState(false);
   const [isLogoutToastShown, setIsLogoutToastShown] = useState(false);
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-      // Só executa no cliente
-      if (typeof window !== 'undefined') {
-        setToken(localStorage.getItem('token')!);
-      }
-    }, []);
+  const getToken = () => {
+    console.log(typeof window)
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("token");
+    }
+    else return ''
+  };
+
+  const token = getToken();
+
   const checkTokenValidity = (currentToken: string | null) => {
     if (!currentToken) {
       setIsTokenValid(false);
@@ -57,7 +60,7 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
 
   const setLogoutTimeout = (timeout: number) => {
     setTimeout(() => {
-      const currentToken = token;
+      const currentToken = getToken();
       checkTokenValidity(currentToken);
     }, timeout);
   };
@@ -85,11 +88,12 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   };
 
   useEffect(() => {
-    const currentToken = token;
+    const currentToken = getToken();
     checkTokenValidity(currentToken);
   }, []);
 
   useEffect(() => {
+    console.log(token)
     if (token) {
       const fetchData = async () => {
         const api = new InternosApi();
@@ -108,6 +112,8 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   };
 
   const atualizarDados = async () => {
+    const token = getToken();
+    console.log(token);
     if (token) {
         const fetchData = async () => {
           const api = new InternosApi();

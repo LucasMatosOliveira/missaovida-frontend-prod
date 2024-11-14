@@ -11,10 +11,13 @@ WORKDIR /app
 COPY ./frontend/package*.json .
 
 # Instala as dependências de produção
-RUN npm ci --only=production
+RUN npm ci
 
 # Copia o restante do código do projeto
 COPY ./frontend .
+COPY ./frontend/public ./public
+COPY ./frontend/src ./src
+COPY ./frontend/components ./components
 
 # Define a variável de ambiente para produção
 ENV NODE_ENV=production

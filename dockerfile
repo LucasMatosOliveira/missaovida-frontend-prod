@@ -17,7 +17,6 @@ RUN npm ci
 COPY ./frontend .
 COPY ./frontend/public ./public
 COPY ./frontend/src ./src
-COPY ./frontend/components ./components
 
 # Define a variável de ambiente para produção
 ENV NODE_ENV=production

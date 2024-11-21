@@ -8,6 +8,7 @@ import { InternosInsaltSchema } from "../schema";
 import { FormCheckbox } from "@/components/form/FormCheckbox";
 import { cloneAndAddClass } from "@/components/form";
 import { useAppFormContext } from "@/components/form/hook";
+import { FormTextArea } from "@/components/form/FormTextArea";
 
 const classNamesSubSection = "border-l-2 border-gray-300 pl-2 ml-5";
 
@@ -20,22 +21,22 @@ export function DadosJuridicosInsalt() {
     const situacaoLegal = watch('juridica.situacao_legal');
 
     useEffect(() => {
-        if(historicoPrisao === false)
-           setValue('juridica.motivo_prisao', '')
+        if (historicoPrisao === false)
+            setValue('juridica.motivo_prisao', '')
     }, [historicoPrisao]);
 
     useEffect(() => {
-        if(processos === false)
+        if (processos === false)
             setValue('juridica.localidade_processo', '')
     }, [processos])
 
     useEffect(() => {
-        if(tornozeleira === false)
+        if (tornozeleira === false)
             setValue('juridica.informou_central', false)
     }, [tornozeleira])
 
     useEffect(() => {
-        if(situacaoLegal === false)
+        if (situacaoLegal === false)
             setValue('juridica.motivo_situacao_ilegal', '')
     }, [situacaoLegal])
 
@@ -45,7 +46,7 @@ export function DadosJuridicosInsalt() {
                 <FormColumn span={6} >
                     <FormCheckbox name="juridica.historico_prisao" label="Já foi preso" />
                     <FormColumn span={8} className={classNamesSubSection}>
-                        <FormInput name="juridica.motivo_prisao" label="Motivo" disabled={!values.juridica?.historico_prisao} />
+                        <FormTextArea name="juridica.motivo_prisao" label="Motivo" disabled={!values.juridica?.historico_prisao} />
                     </FormColumn>
                 </FormColumn>
                 <FormColumn span={6}>
@@ -65,7 +66,7 @@ export function DadosJuridicosInsalt() {
                 <FormColumn span={6} >
                     <FormCheckbox name="juridica.situacao_legal" label="Está em desacordo com a lei" />
                     <FormColumn span={8} className={classNamesSubSection}>
-                        <FormInput name="juridica.motivo_situacao_ilegal" label="Porquê?" disabled={!values.juridica?.situacao_legal} />
+                        <FormTextArea name="juridica.motivo_situacao_ilegal" label="Porquê?" disabled={!values.juridica?.situacao_legal} />
                     </FormColumn>
                 </FormColumn>
             </FormRow>

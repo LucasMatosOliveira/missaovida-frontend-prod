@@ -11,6 +11,7 @@ import { Masks } from "@/commom/form/mask";
 import { FilhosInsalt } from "./Filhos";
 import { useAppFormContext } from "@/components/form/hook";
 import { useEffect } from "react";
+import { CidadesSelect } from "@/components/form/Select/selects/Cidades";
 
 const classNamesSubSection = "border-l-2 border-gray-300 pl-2 ml-5";
 
@@ -19,16 +20,17 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
     const values = watch();
     const familiaApoio = watch('temFamiliaApoio');
     const religiao = watch('religiao');
+    const estado = watch('estadoUf');
 
     useEffect(() => {
-        if(familiaApoio === false){
+        if (familiaApoio === false) {
             setValue('nomeFamiliar', '');
             setValue('enderecoFamiliarApoio', '');
         }
     }, [familiaApoio]);
 
     useEffect(() => {
-        if(religiao === false)
+        if (religiao === false)
             setValue('qualReligiao', '');
     }, [religiao]);
 
@@ -39,15 +41,16 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
                     <FormInput name="name" label="Nome" />
                 </FormColumn>
                 <FormColumn span={4}>
-                    <FormInput name="cidade" label="Cidade" />
+                    <FormInput name="estadoUf" label="Estado (Sigla)" />
                 </FormColumn>
                 <FormColumn span={4}>
+                    {/*<CidadesSelect name="cidade" label="Cidade" estado={estado} />*/}
                     <FormInput name="estadoUf" label="Estado (Sigla)" />
                 </FormColumn>
             </FormRow>
             <FormRow>
-            <FormColumn span={4}>
-                    <FormInputMask name="cpf" label="CPF" mask={Masks.CPF}/>
+                <FormColumn span={4}>
+                    <FormInputMask name="cpf" label="CPF" mask={Masks.CPF} />
                 </FormColumn>
                 <FormColumn span={4}>
                     <FormInput name="rg" label="RG" />
@@ -81,7 +84,7 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
                     <FormInputMask name="telefone" label="Telefone" mask={Masks.Telefone} />
                 </FormColumn>
                 <FormColumn span={4}>
-                    <FormInputMask name="whatsapp" label="WhatsApp" mask={Masks.Celular}/>
+                    <FormInputMask name="whatsapp" label="WhatsApp" mask={Masks.Celular} />
                 </FormColumn>
                 <FormColumn span={4}>
                     <FormInput name="escolaridade" label="Escolaridade" />
@@ -106,7 +109,7 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
                 <FormColumn span={6} >
                     <FormCheckbox name="religiao" label="Religião" />
                     <FormColumn span={8} className={classNamesSubSection}>
-                        <FormInput name="qualReligiao" label="Qual Religião?"  disabled={!values.religiao}/>
+                        <FormInput name="qualReligiao" label="Qual Religião?" disabled={!values.religiao} />
                     </FormColumn>
                 </FormColumn>
             </FormRow>

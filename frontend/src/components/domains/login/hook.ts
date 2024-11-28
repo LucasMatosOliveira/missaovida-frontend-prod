@@ -28,6 +28,7 @@ export function UseLoginPage() {
         console.log("Usuário autenticado:", response);
 
         if (response?.error) {
+            console.log(response?.error)
             toast.error("Erro ao autenticar usuário");
             return;
         }

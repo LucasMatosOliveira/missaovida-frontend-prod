@@ -8,7 +8,7 @@ import { eye } from 'react-icons-kit/feather/eye';
 import { FormEye } from '../FormEye';
 import { useAppFormContext } from '../hook';
 
-export const FormInputMask = <TModel,>({ label, name, disabled, help, step = 'any', transform = 'none', type, mask }: FormInputMaskProps<TModel>) => {
+export const FormInputMask = <TModel,>({ label, name, disabled, help, step = 'any', transform = 'none', type, mask, alwaysShowMask}: FormInputMaskProps<TModel>) => {
   const context = useAppFormContext();
   const { control, formState: { errors }, getValues} = context;
   const erro = obterValor(errors, name as string);
@@ -28,14 +28,19 @@ export const FormInputMask = <TModel,>({ label, name, disabled, help, step = 'an
   };
 
   const handleValue = (value: string) => {
-    switch (transform) {
-      case 'uppercase':
-        return value.toUpperCase();
-      case 'lowercase':
-        return value.toLowerCase();
-      default:
-        return value;
-    }
+      const cleanValue = value.replace(/_/g, ''); // Remove underscores
+      switch (transform) {
+          case 'uppercase':
+              return cleanValue.toUpperCase();
+          case 'lowercase':
+              return cleanValue.toLowerCase();
+          case 'money':
+              return cleanValue.replace(/\D/g, '')
+                  .replace(/(\d)(\d{2})$/, '$1,$2')
+                  .replace(/(?=(\d{3})+(\D))\B/g, '.');
+          default:
+              return cleanValue;
+      }
   };
 
   return (
@@ -53,6 +58,8 @@ export const FormInputMask = <TModel,>({ label, name, disabled, help, step = 'an
               onChange={(event) => onChange(handleValue(event.target.value))}
               disabled={disabled}
               className={`input-field ${erroMessage ? 'input-field-error' : ''}`}
+              alwaysShowMask={alwaysShowMask}
+              maskPlaceholder=""
             />
             {type === 'password' && <FormEye icon={icon} size={20} handleToggle={handleToggle} />}
           </div>
@@ -89,8 +96,9 @@ export interface FormInputMaskProps<TModel> {
   mask: ((value: string) => string) | string;
   name: keyof TModel;
   type?: HTMLInputTypeAttribute;
-  transform?: 'uppercase' | 'lowercase' | 'none';
+  transform?: 'uppercase' | 'lowercase' | 'none' | 'money';
   help?: string;
   disabled?: boolean;
   step?: string;
+  alwaysShowMask?: boolean;
 }

@@ -6,6 +6,9 @@ import { FormCheckbox } from "@/components/form/FormCheckbox";
 import { InternosInsaltSchema } from "../../schema";
 import { AssinaturaPdfButton } from "@/components/reports/pdf";
 import { FormTextArea } from "@/components/form/FormTextArea";
+import { FormInputMask } from '@/components/form/FormInputMask';
+import { Masks } from '@/commom/form/mask';
+import { FormInputCurrency } from "@/components/form/FormInputCurrency";
 
 export function TermoGuardaBensInsalt() {
     return (
@@ -29,7 +32,7 @@ export function TermoGuardaBensInsalt() {
                         <FormTextArea name="guarda.descricao_carteira" label="Qual a aparência/cor da carteira para documentos?" />
                     </FormColumn>
                     <FormColumn span={4}>
-                        <FormInput name="guarda.recurso_especie" label="Apresentou recurso em espécie no valor de (R$)" />
+                        <FormInputCurrency name="guarda.recurso_especie" label="Apresentou recurso em espécie no valor de (R$)" />
                     </FormColumn>
                     <FormColumn span={4}>
                         <FormInput name="guarda.aparelho_celular" label="Aparelho celular/marca apresentado:" />

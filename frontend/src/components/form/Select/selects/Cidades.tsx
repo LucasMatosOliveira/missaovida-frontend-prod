@@ -14,7 +14,7 @@ export interface ParticipantesSelectProps<TModel> extends Omit<FormAsyncPaginate
     estado?: string;
 }
 
-export const loadCidades: (args: LoadCidades) => FetchDataPaginate = ({ estado }) => async ({ limite, pagina, searchTerm }) => {
+export const loadCidades: (args: LoadCidades) => FetchDataPaginate = ({ estado }) => async ({ limite, pagina, searchTerm, ids }) => {
 
     if (!estado || estado?.length === 1) {
         return {
@@ -26,10 +26,10 @@ export const loadCidades: (args: LoadCidades) => FetchDataPaginate = ({ estado }
     }
     try {
 
-        let body = {
+        let body: BodyFindCidades = {
             estado,
-            page: pagina,
-            per_page: limite,
+            page: pagina!,
+            per_page: limite!,
             searchInput: ''
         };
 
@@ -38,6 +38,13 @@ export const loadCidades: (args: LoadCidades) => FetchDataPaginate = ({ estado }
                 ...body,
                 searchInput: searchTerm
             }
+
+        if (ids) {
+            body = {
+                ...body,
+                id: ids[0]
+            }
+        }
 
         const response = await fetch('https://paginateestadosibge.fly.dev/cidades', {
             method: 'POST',
@@ -84,4 +91,12 @@ export interface LoadCidades {
 export interface Cidades {
     id: string;
     nome: string;
+}
+
+export interface BodyFindCidades {
+    estado: string,
+    page: number,
+    per_page: number,
+    searchInput?: string,
+    id?: string
 }

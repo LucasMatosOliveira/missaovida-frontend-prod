@@ -10,18 +10,25 @@ import { FormInputMask } from "@/components/form/FormInputMask";
 import { Masks } from "@/commom/form/mask";
 import { FilhosInsalt } from "./Filhos";
 import { useAppFormContext } from "@/components/form/hook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CidadesSelect } from "@/components/form/Select/selects/Cidades";
+import { EstadosSelect } from "@/components/form/Select/selects/Estados";
+import { Cidades2Select } from "@/components/form/Select/selects/Cidades2";
 
 const classNamesSubSection = "border-l-2 border-gray-300 pl-2 ml-5";
 
 export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
     const { watch, setValue } = useAppFormContext<InternosInsaltSchema>();
+    const [key, setKey] = useState('INIT')
     const values = watch();
     const familiaApoio = watch('temFamiliaApoio');
     const religiao = watch('religiao');
     const estado = watch('estadoUf');
+    console.log({estado})
 
+    useEffect(() => {
+        setKey(new Date().getTime().toString())
+    }, [estado])
     useEffect(() => {
         if (familiaApoio === false) {
             setValue('nomeFamiliar', '');
@@ -41,11 +48,11 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
                     <FormInput name="name" label="Nome" />
                 </FormColumn>
                 <FormColumn span={4}>
-                    <FormInput name="estadoUf" label="Estado (Sigla)" />
+                    <EstadosSelect name="estadoUf" label="Estado (Sigla)" />
                 </FormColumn>
                 <FormColumn span={4}>
-                    {/*<CidadesSelect name="cidade" label="Cidade" estado={estado} />*/}
-                    <FormInput name="estadoUf" label="Estado (Sigla)" />
+                    <Cidades2Select name="cidade" label="Cidade" estado={estado} fetchRefresh={key} />
+                    {/* <FormInput name="cidade" label="Cidade" /> */}
                 </FormColumn>
             </FormRow>
             <FormRow>

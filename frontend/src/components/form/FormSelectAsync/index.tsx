@@ -1,47 +1,54 @@
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { SelectAsync, SelectAsyncProps } from "../Select/Async";
 import { FormLabel } from "../FormLabel";
 import { FormError } from "../FormError";
-import { SelectAsyncPaginate, SelectAsyncPaginateProps } from "../Select/AsyncPaginate";
-import { SelectItem } from "../Select/AsyncPaginate";
+import { SelectItem } from "../Select/base";
 
-export const FormSelectAsyncPaginate = <TModel,>({ label, isMulti, name, fetchRefresh, help, disabled, buttonFetchData, isSearchable, tags, isStatic, isClearable, onChange: onChangeProp, fetchData }: FormAsyncPaginateSelectProps<TModel>) => {
-    const [selectKey, setSelectKey] = useState("FormSelectAsync");
+export const FormSelectAsync = <TModel,>({ label, isMulti, name, fetchRefresh, help, disabled, buttonFetchData, isSearchable, tags, isStatic, isClearable, onChange: onChangeProp, fetchData }: FormAsyncSelectProps<TModel>) => {
+    const [selectKey, setSelectKey] = useState(fetchRefresh ?? "FormSelectAsync");
     const [isLoading, setIsLoading] = useState(false);
     const context = useFormContext();
-    const { control, getValues } = context;
+    const { control } = context;
+    buttonFetchData ??= true;
 
-    buttonFetchData ??= false;
+    useEffect(() => {
 
-    useEffect(() => setSelectKey(new Date().toString()), [fetchRefresh]);
+        if (!fetchRefresh)
+            return;
+
+        if (fetchRefresh !== selectKey)
+            setSelectKey(new Date().toString());
+
+    }, [fetchRefresh]);
 
     return (
         <>
             {label && <FormLabel name={name as string}>{label}</FormLabel>}
-            {/*help && <FormInfo content={help} />*/}
-            <div className="input-group flex-nowrap">
+            <div className="input-group">
                 <Controller
                     control={control}
                     name={name as string}
-                    render={({ field: { value, onChange } }) => {
+                    render={({ field: { value,onChange }}) => {
 
-                        return <SelectAsyncPaginate
+                        return <SelectAsync
                             className="select2"
                             value={isMulti ? value?.map(v => v.toString()) : value?.toString()}
                             onChange={(options) => {
-                                console.log({ value })
-                                onChange({ type: '', target: { value: Array.isArray(options) ? options.map(x => x.value) : options?.value ?? '' } });
+                                onChange({ type: '', target: { value: Array.isArray(options) ? options.map(x => x.value) : options?.value ?? ''} });
                                 onChangeProp?.(options);
                             }}
+                            isStatic={isStatic}
+                            isMulti={isMulti}
                             fetchData={fetchData}
                             onFetchData={setIsLoading}
                             isSearchable={isSearchable}
-                            key={fetchRefresh + selectKey}
+                            key={selectKey}
+                            tags={tags}
                             disabled={disabled}
                             isClearable={isClearable}
                         />
-                    }
-                    }
+                    }}
                 />
                 {buttonFetchData &&
                     <div className="input-group-append" style={{ zIndex: 0 }}>
@@ -54,7 +61,7 @@ export const FormSelectAsyncPaginate = <TModel,>({ label, isMulti, name, fetchRe
     );
 }
 
-export interface FormAsyncPaginateSelectProps<TModel> extends Pick<SelectAsyncPaginateProps, 'isMulti' | 'fetchData' | 'isSearchable' | 'isClearable'> {
+export interface FormAsyncSelectProps<TModel> extends Pick<SelectAsyncProps, 'isMulti' | 'fetchData' | 'isSearchable' | 'isClearable'> {
     label?: string;
     name: keyof TModel;
     help?: string;

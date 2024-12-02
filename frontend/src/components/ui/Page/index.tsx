@@ -18,7 +18,7 @@ export function PageLayout({ children, title }: PageLayoutProps) {
     return (
         <div className="page-container">
             <Header pageTitle={title} className="mb-5" />
-            <section className='py-24 bg-white flex justify-center items-center' style={{ backgroundColor: 'rgb(243, 244, 246)' }}>
+            <section className='py-16 bg-white flex justify-center items-center' style={{ backgroundColor: 'rgb(243, 244, 246)' }}>
                 <div className='container bg-white p-3 rounded-lg text-black custom-border'>
                     <div className="tabs-container">
                         {snapshot.tabs.map((tab) => (

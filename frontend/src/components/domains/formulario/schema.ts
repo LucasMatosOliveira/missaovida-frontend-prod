@@ -95,7 +95,7 @@ export const internosInsaltSchema = z.object({
     id: numberCoerce(z.number().optional()),
     name: z.string(),
     cpf: z.string().optional(),
-    cidade: z.string().optional(),
+    cidade: z.coerce.string().optional(),
     estadoUf: z.string().toUpperCase().optional(),
     rg: z.string().optional(),
     orgaoExpedidor: z.string().optional(),

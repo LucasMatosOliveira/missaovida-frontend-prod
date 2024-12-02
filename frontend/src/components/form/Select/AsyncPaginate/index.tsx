@@ -101,14 +101,6 @@ export function SelectAsyncPaginate({ value, isMulti, className, isSearchable, d
         }
     };
 
-    const noOptionsMessage = () => {
-        if (isLoading) return "Buscando...";
-        if (searchTerm.length < MIN_CHARS) {
-            return `Digite ${MIN_CHARS - searchTerm.length} ou mais caracteres`;
-        }
-        return "";
-    };
-
     useEffect(() => {
         if (!isStatic)
             return;
@@ -129,20 +121,22 @@ export function SelectAsyncPaginate({ value, isMulti, className, isSearchable, d
     }, [value, options]);
 
     useEffect(() => {
-        if (!value)
-            return;
+        if (!value) return;
 
         const values = Array.isArray(value) ? value : [value];
 
         const missingValues = values.filter(x => !options.some(y => y.value === x));
-
-        if (missingValues.length === 0)
-            return;
+        console.log({ values, missingValues })
+        if (!missingValues.length) return;
 
         (async () => {
-            const result = await fetchData({ pagina: PRIMEIRA_PAGINA, limite: missingValues.length, ids: missingValues });
+            const result = await fetchData({
+                pagina: PRIMEIRA_PAGINA,
+                limite: missingValues.length,
+                ids: missingValues
+            });
+            console.log({ result })
             setOptions(mergeWithCurrentOptions(result.data));
-
         })();
 
     }, [value]);
@@ -159,7 +153,7 @@ export function SelectAsyncPaginate({ value, isMulti, className, isSearchable, d
             closeMenuOnSelect={!isMulti}
             placeholder="Selecione..."
             hideSelectedOptions={false}
-            controlShouldRenderValue={false}
+            controlShouldRenderValue={true}
             isSearchable={isSearchable}
             //components={{ ...components, IndicatorSeparator: null }}
             isLoading={isLoading}

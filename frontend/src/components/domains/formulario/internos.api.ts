@@ -39,18 +39,18 @@ export class InternosApi {
         });
 
         if (!response.ok) {
-            console.log({ response });
+            //console.log({ response });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
         }
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         return data;
     }
 
     public async alterar(id: string, dados: Interno, token: string): Promise<Interno> {
-        console.log({ token, dados })
+        //console.log({ token, dados })
 
         const response = await fetch(this._postUrl, {
             method: 'PUT',
@@ -63,10 +63,10 @@ export class InternosApi {
 
         const data = await response.json();
         if (!response.ok) {
-            console.log({ data });
+            //console.log({ data });
             throw new Error(`Erro: ${response.status} ${response.statusText}`);
         }
-        console.log({ data, response });
+        //console.log({ data, response });
         return data;
     }
 
@@ -126,7 +126,7 @@ export class InternosApi {
 
         const data = await response.json();
         if (!response.ok) {
-            console.log({ data });
+            //console.log({ data });
             throw new Error(`Erro: ${response.status} ${response.statusText}`);
         }
         return data;
@@ -167,10 +167,10 @@ export class InternosApi {
 
         const data = await response.json();
         if (!response.ok) {
-            console.log({ data });
+            //console.log({ data });
             throw new Error(`Erro: ${response.status} ${response.statusText}`);
         }
-        console.log({ data, response });
+        //console.log({ data, response });
         return data;
     }
 }

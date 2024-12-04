@@ -24,11 +24,12 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
     const familiaApoio = watch('temFamiliaApoio');
     const religiao = watch('religiao');
     const estado = watch('estadoUf');
-    console.log({estado})
+    //console.log({ estado })
 
     useEffect(() => {
         setKey(new Date().getTime().toString())
-    }, [estado])
+    }, [estado]);
+
     useEffect(() => {
         if (familiaApoio === false) {
             setValue('nomeFamiliar', '');

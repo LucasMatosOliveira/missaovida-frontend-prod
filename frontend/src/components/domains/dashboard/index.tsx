@@ -15,10 +15,10 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [hasRedirected, setHasRedirected] = useState(false);
   const [isLogoutToastShown, setIsLogoutToastShown] = useState(false);
-  const router = useRouter();
+  //const router = useRouter();
 
   const getToken = () => {
-    console.log(typeof window)
+    //console.log(typeof window)
     if (typeof window !== "undefined") {
       return localStorage.getItem("token");
     }
@@ -50,7 +50,7 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
 
       setLogoutTimeout(Math.min(timeUntilExpiration, 3600) * 1000);
     } catch (error) {
-      console.error("Erro ao decodificar o token", error);
+      toast.error("Erro ao decodificar o token" + error);
       setIsTokenValid(false);
       if (!hasRedirected && !isLogoutToastShown) {
         initiateLogoutWithCountdown();
@@ -93,7 +93,7 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
   }, []);
 
   useEffect(() => {
-    console.log(token)
+    //console.log(token)
     if (token) {
       const fetchData = async () => {
         const api = new InternosApi();
@@ -113,26 +113,26 @@ export function DashboardGrid({ idInterno, onDadosSalvos, newTab }: DashboardPro
 
   const atualizarDados = async () => {
     const token = getToken();
-    console.log(token);
+    //console.log(token);
     if (token) {
-        const fetchData = async () => {
-          const api = new InternosApi();
-          const res = await api.getInternosForGrid(token);
-          setUserData(res);
-        };
+      const fetchData = async () => {
+        const api = new InternosApi();
+        const res = await api.getInternosForGrid(token);
+        setUserData(res);
+      };
 
-        fetchData();
-      } else {
-        toast.warn("Usuário não encontrado");
-      }
-};
+      fetchData();
+    } else {
+      toast.warn("Usuário não encontrado");
+    }
+  };
 
   const columns = createColumns(handleAlterar);
 
   return (
     <>
       {isTokenValid ? (
-        <DataTable columns={columns} data={userData} actionsAddTab={newTab} onAlterar={handleAlterar} refreshData={atualizarDados}/>
+        <DataTable columns={columns} data={userData} actionsAddTab={newTab} onAlterar={handleAlterar} refreshData={atualizarDados} />
       ) : (
         <div>Token inválido. Redirecionando...</div>
       )}

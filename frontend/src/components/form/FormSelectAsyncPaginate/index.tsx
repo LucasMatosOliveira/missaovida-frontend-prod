@@ -29,7 +29,6 @@ export const FormSelectAsyncPaginate = <TModel,>({ label, isMulti, name, fetchRe
                             className="select2"
                             value={isMulti ? value?.map(v => v.toString()) : value?.toString()}
                             onChange={(options) => {
-                                console.log({ value })
                                 onChange({ type: '', target: { value: Array.isArray(options) ? options.map(x => x.value) : options?.value ?? '' } });
                                 onChangeProp?.(options);
                             }}

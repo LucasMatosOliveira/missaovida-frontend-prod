@@ -12,9 +12,9 @@ import { DashboardGrid } from "@/components/domains/dashboard";
 import { InternoInsalt } from "@/components/domains/formulario";
 import { useSnapshot } from "valtio";
 
-export default function Dashboard(){
+export default function Dashboard() {
     const { showSpinner, hideSpinner } = useSpinner();
-    const { data: session, status} = useSession();
+    const { data: session, status } = useSession();
     const id = useMemo(() => createFakeTempGUID(), []);
     const router = useRouter();
     const hasDefaultTabCreated = useRef(false);
@@ -31,23 +31,24 @@ export default function Dashboard(){
             }
         }
 
-        console.log(session?.user)
+        //console.log(session?.user)
     }, [session, status, router, showSpinner, hideSpinner]);
 
-    const newTab = ({ content, title = "Novo Interno", isDefault = false, idInterno}: {
-        content: ReactNode; title?: string; isDefault?: boolean; idInterno?: string;}) => {
+    const newTab = ({ content, title = "Novo Interno", isDefault = false, idInterno }: {
+        content: ReactNode; title?: string; isDefault?: boolean; idInterno?: string;
+    }) => {
         const newId = id.next();
         addTab(newId, title, content, isDefault);
     };
 
     useEffect(() => {
-        console.log("Status da sessão:", session);
-        console.log("Abas existentes:", snapshot.tabs);
+        // console.log("Status da sessão:", session);
+        //console.log("Abas existentes:", snapshot.tabs);
         if (session && !hasDefaultTabCreated.current) {
             const hasDefaultTab = snapshot.tabs.some(tab => tab.isDefault);
-            console.log("Já existe aba padrão:", hasDefaultTab);
+            //console.log("Já existe aba padrão:", hasDefaultTab);
             if (!hasDefaultTab) {
-                console.log("Criando nova aba padrão");
+                //console.log("Criando nova aba padrão");
                 const defaultContent = (
                     <DashboardGrid
                         newTab={(idInterno, title) =>

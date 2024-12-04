@@ -126,7 +126,7 @@ export function SelectAsyncPaginate({ value, isMulti, className, isSearchable, d
         const values = Array.isArray(value) ? value : [value];
 
         const missingValues = values.filter(x => !options.some(y => y.value === x));
-        console.log({ values, missingValues })
+        //console.log({ values, missingValues })
         if (!missingValues.length) return;
 
         (async () => {
@@ -135,7 +135,7 @@ export function SelectAsyncPaginate({ value, isMulti, className, isSearchable, d
                 limite: missingValues.length,
                 ids: missingValues
             });
-            console.log({ result })
+            //console.log({ result })
             setOptions(mergeWithCurrentOptions(result.data));
         })();
 

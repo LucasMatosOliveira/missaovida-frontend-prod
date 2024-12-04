@@ -19,6 +19,8 @@ export function UseLoginPage() {
     const { reset, setError } = formMethods;
 
     const handleSalvar = async (data: UserLoginSchema) => {
+        localStorage.setItem('token', '');
+
         const response = await signIn('credentials', {
             username: data.username,
             password: data.password,
@@ -29,7 +31,10 @@ export function UseLoginPage() {
 
         if (response?.error) {
             console.log(response?.status)
-            toast.error("Erro ao autenticar usuário");
+            if (response?.status === 401)
+                toast.error("Ops! Algo demorou mais do que o esperado...")
+            else
+                toast.error("Erro ao autenticar usuário");
             return;
         }
 

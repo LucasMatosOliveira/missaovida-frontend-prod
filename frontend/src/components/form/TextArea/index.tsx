@@ -11,6 +11,8 @@ export const TextArea = ({
     required,
     ...props
 }: TextAreaProps & React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>) => {
+    const context = useFormContext();
+
     if (!name)
         return (
             <div className="mb-5">
@@ -29,7 +31,6 @@ export const TextArea = ({
             </div>
         );
 
-    const context = useFormContext();
 
     const {
         register,

@@ -21,6 +21,7 @@ export const FormSelectAsync = <TModel,>({ label, isMulti, name, fetchRefresh, h
             setSelectKey(new Date().toString());
 
     }, [fetchRefresh]);
+    //console.log({ refresh: selectKey })
 
     return (
         <>
@@ -29,13 +30,13 @@ export const FormSelectAsync = <TModel,>({ label, isMulti, name, fetchRefresh, h
                 <Controller
                     control={control}
                     name={name as string}
-                    render={({ field: { value,onChange }}) => {
+                    render={({ field: { value, onChange } }) => {
 
                         return <SelectAsync
                             className="select2"
                             value={isMulti ? value?.map(v => v.toString()) : value?.toString()}
                             onChange={(options) => {
-                                onChange({ type: '', target: { value: Array.isArray(options) ? options.map(x => x.value) : options?.value ?? ''} });
+                                onChange({ type: '', target: { value: Array.isArray(options) ? options.map(x => x.value) : options?.value ?? '' } });
                                 onChangeProp?.(options);
                             }}
                             isStatic={isStatic}

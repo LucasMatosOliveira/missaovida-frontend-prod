@@ -13,8 +13,10 @@ import { toast } from "react-toastify";
 import { useAppForm } from "@/components/form/hook";
 import { AcolhidoFilho, Interno, InternoReturn } from "./entidades";
 import { Masks } from '@/commom/form/mask';
+import { closeTab, tabsState } from '@/store/tabs';
 
 export function useInternosInsalt({ idInterno, onDadosSalvos }: InternosInsaltArgs) {
+    const snapshot = useSnapshot(tabsState);
     const formMethods = useAppForm<InternosInsaltSchema>({
         resolver: zodResolver(internosInsaltSchema),
     });
@@ -22,10 +24,10 @@ export function useInternosInsalt({ idInterno, onDadosSalvos }: InternosInsaltAr
     const { showSpinner, hideSpinner } = useSpinner();
     const getToken = () => {
         if (typeof window !== "undefined") {
-          return localStorage.getItem("token");
+            return localStorage.getItem("token");
         }
         else return ''
-      };
+    };
 
     const token = getToken();
     const { reset } = formMethods;
@@ -65,12 +67,11 @@ export function useInternosInsalt({ idInterno, onDadosSalvos }: InternosInsaltAr
             const response = isNovo
                 ? await api.inserir(dados, token!)
                 : await api.alterar(idInterno, dados, token!);
-            toast.success('Dados salvos com sucesso')
-
+            toast.success('Dados salvos com sucesso');
+            closeTab(snapshot.activeTabId)
         }
         catch (error) {
             toast.error(error as string);
-            // console.log({ error })
         }
     }
 
@@ -330,7 +331,7 @@ const mapTypeForSchema = (data: Partial<Interno>): InternosInsaltSchema => {
     };
 };
 
-const mapNaturalidade = (naturalidade: string): { cidade: string, estadoUf: string } => {
+export const mapNaturalidade = (naturalidade: string): { cidade: string, estadoUf: string } => {
     const pipeIndex = naturalidade.indexOf('|')
     if (pipeIndex == -1)
         return {
@@ -339,8 +340,8 @@ const mapNaturalidade = (naturalidade: string): { cidade: string, estadoUf: stri
         }
 
     return {
-        cidade: naturalidade.substring(0, pipeIndex),
-        estadoUf: naturalidade.substring(pipeIndex + 1)
+        cidade: naturalidade.substring(0, pipeIndex).trim(),
+        estadoUf: naturalidade.substring(pipeIndex + 1).trim()
     };
 
 }

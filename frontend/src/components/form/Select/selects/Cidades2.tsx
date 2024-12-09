@@ -5,7 +5,6 @@ import { FetchData, FetchDataArgs } from "../Async";
 import { EstadoUFDisplay } from "@/components/domains/formulario/entidades";
 
 export function Cidades2Select<TModel>({ estado, ...props }: EstadosSelectProps<TModel>) {
-    console.log({ cidades2: estado })
     const loadCidadesSelect = useCallback((args: any) => loadCidades(estado)(args), [estado]);
 
     return <FormSelectAsync {...props} fetchData={loadCidadesSelect} />;
@@ -53,4 +52,19 @@ export const loadCidades: (estadoId?: string | number) => FetchData = (estadoId)
     }
 
     return [];
+};
+
+export const findCidadeNome = async (estadoId: string | number, cidadeId: string | number) => {
+
+    const url = `/select_cidades_estado/${EstadoUFDisplay[estadoId]}.json`;
+    const response = await fetch(url);
+    const estadoSelecionado = await response.json() as Cidades[];
+
+
+    if (estadoSelecionado) {
+        const cidade = estadoSelecionado.filter(x => x.id === Number(cidadeId))[0];
+        return cidade.nome
+    }
+
+    return null;
 };

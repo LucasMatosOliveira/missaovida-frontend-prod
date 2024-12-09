@@ -13,7 +13,7 @@ export function SignOutButton({ className, ...props }: SignOutButtonProps) {
         if (typeof window !== 'undefined') {
             localStorage.clear();
         }
-        await signOut({ callbackUrl: AppRoutes.Login() });
+        await signOut();
     };
 
     return (

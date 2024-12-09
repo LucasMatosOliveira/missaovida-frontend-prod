@@ -11,9 +11,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Icon from 'react-icons-kit';
 import { chevronDown } from 'react-icons-kit/fa/chevronDown'
-import { Interno } from '@/components/domains/formulario/entidades';
+import { EstadoUFDisplay, Interno } from '@/components/domains/formulario/entidades';
 import { InternosApi } from '@/components/domains/formulario/internos.api';
 import { toast } from 'react-toastify';
+import { mapNaturalidade } from '@/components/domains/formulario/hook';
+import { findCidadeNome } from '../Select/selects/Cidades2';
+import { useEffect, useState } from 'react';
 
 export type User = {
   id_acolhido: number;
@@ -97,10 +100,7 @@ export const createColumns = (onAlterar?: (idInterno: string, nome: string) => v
   {
     accessorKey: 'naturalidade',
     header: 'Naturalidade',
-    cell: ({ row }) => {
-      const value = row.getValue('naturalidade')
-      return <div className="font-medium">{value as string}</div>;
-    }
+    cell: ({ row }) => <NaturalidadeCell value={row.getValue('naturalidade') as string} />,
   },
   {
     accessorKey: 'data_nascimento',
@@ -172,3 +172,18 @@ export const createColumns = (onAlterar?: (idInterno: string, nome: string) => v
     },
   },
 ];
+
+const NaturalidadeCell = ({ value }: { value: string }) => {
+  const [naturalidade, setNaturalidade] = useState<string>('');
+  const { cidade, estadoUf } = mapNaturalidade(value);
+
+  useEffect(() => {
+    const buscarCidade = async () => {
+      const cidadeNome = await findCidadeNome(estadoUf, cidade);
+      setNaturalidade(cidadeNome ? `${EstadoUFDisplay[estadoUf]} | ${cidadeNome}` : EstadoUFDisplay[estadoUf]);
+    };
+    buscarCidade();
+  }, [cidade, estadoUf]);
+
+  return <div className="font-medium">{naturalidade}</div>;
+};

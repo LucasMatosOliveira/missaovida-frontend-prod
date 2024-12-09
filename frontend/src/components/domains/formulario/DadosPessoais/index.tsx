@@ -52,7 +52,7 @@ export function DadosPessoaisInsalt({ idInterno }: DadosPessoaisInsaltProps) {
                     <EstadosSelect name="estadoUf" label="Estado (Sigla)" />
                 </FormColumn>
                 <FormColumn span={4}>
-                    <Cidades2Select name="cidade" label="Cidade" estado={estado} fetchRefresh={key} />
+                    <Cidades2Select name="cidade" label="Cidade" estado={estado} fetchRefresh={estado} />
                     {/* <FormInput name="cidade" label="Cidade" /> */}
                 </FormColumn>
             </FormRow>
